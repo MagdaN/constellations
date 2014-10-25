@@ -1,7 +1,10 @@
 $( document ).ready(function() {
 
-  var total_width = 640;
-  var center      = 320;
+  var total_width = 1120;
+  var center = {
+    'x': 800,
+    'y': 320
+  }
 
   outer_circle = {
     'r': 310
@@ -30,23 +33,23 @@ $( document ).ready(function() {
                           .data(inner_circles)
                           .enter()
                           .append("circle")
-                          .attr("cx", center)
-                          .attr("cy", center)
+                          .attr("cx", center.x)
+                          .attr("cy", center.y)
                           .attr("r", function (d) { return d.r; })
                           .attr("fill","transparent")
                           .attr("stroke","white");
 
   circleGroup.append("circle")
-                          .attr("cx", center)
-                          .attr("cy", center)
+                          .attr("cx", center.x)
+                          .attr("cy", center.y)
                           .attr("r", outer_circle.r)
                           .attr("fill", "transparent")
                           .attr("stroke", "white")
                           .attr("stroke-width", 4);
 
   circleGroup.append("circle")
-                          .attr("cx", center)
-                          .attr("cy", center)
+                          .attr("cx", center.x)
+                          .attr("cy", center.y)
                           .attr("r", 20)
                           .attr("fill", "white")
                           .attr("stroke", "white");
@@ -55,8 +58,8 @@ $( document ).ready(function() {
                           .data(ellipse_list)
                           .enter()
                           .append("ellipse")
-                          .attr("cx", center)
-                          .attr("cy", center)
+                          .attr("cx", center.x)
+                          .attr("cy", center.y)
                           .attr("rx", function (d) { return d.rx;})
                           .attr("ry",function (d) { return d.ry;})
                           .attr("fill", "transparent")
@@ -79,7 +82,7 @@ $( document ).ready(function() {
             //x *= 1.5;
             x += -10;
             x *= (Math.PI / 180.0);
-            x = center - (Math.cos(x) * inner_circles[0].r);
+            x = center.x - (Math.cos(x) * inner_circles[0].r);
             return x; 
           })
           .attr("cy", function (d) {
@@ -87,7 +90,7 @@ $( document ).ready(function() {
             //y *= 1.5;
             y += 10;
             y *= (Math.PI / 180.0);
-            y = center + (Math.sin(y) * inner_circles[0].r);
+            y = center.y + (Math.sin(y) * inner_circles[0].r);
             return y;
           })
           .attr("r", 3)
