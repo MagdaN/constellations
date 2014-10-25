@@ -1,15 +1,22 @@
 $( document ).ready(function() {
 
-  var total_width = 760;
-  var center      = 380;
+  var total_width = 640;
+  var center      = 320;
 
-  circle_list = [{'r': 360}, {'r': 25}, {'r': 50}];
+  outer_circle = {
+    'r': 310
+  };
+  inner_circles = [
+    {'r': 300},
+    {'r':  25},
+    {'r':  50}
+  ];
 
   ellipse_list = [
-    {'rx': 360, 'ry':90},
-    {'rx':360, 'ry': 250},
-    {'rx': 90, 'ry': 360},
-    {'rx': 250, 'ry': 360}
+    {'rx': 300, 'ry':  60},
+    {'rx': 300, 'ry': 180},
+    {'rx':  60, 'ry': 300},
+    {'rx': 180, 'ry': 300}
   ];
 
   var svgContainer = d3.select("#stars").append("svg")
@@ -20,7 +27,7 @@ $( document ).ready(function() {
   var elipseGroup = svgContainer.append("g");
 
   circleGroup.selectAll("circle")
-                          .data(circle_list)
+                          .data(inner_circles)
                           .enter()
                           .append("circle")
                           .attr("cx", center)
@@ -32,7 +39,7 @@ $( document ).ready(function() {
   circleGroup.append("circle")
                           .attr("cx", center)
                           .attr("cy", center)
-                          .attr("r", 370)
+                          .attr("r", outer_circle.r)
                           .attr("fill", "transparent")
                           .attr("stroke", "white")
                           .attr("stroke-width", 4);
@@ -72,7 +79,7 @@ $( document ).ready(function() {
             //x *= 1.5;
             x += -10;
             x *= (Math.PI / 180.0);
-            x = 360 - (Math.cos(x) * 360);
+            x = center - (Math.cos(x) * inner_circles[0].r);
             return x;
           })
           .attr("cy", function (d) {
@@ -80,7 +87,7 @@ $( document ).ready(function() {
             //y *= 1.5;
             y += 10;
             y *= (Math.PI / 180.0);
-            y = (Math.sin(y) * 360) + 360;
+            y = center + (Math.sin(y) * inner_circles[0].r);
             return y;
           })
           .attr("r", 3)

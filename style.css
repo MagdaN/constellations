@@ -5,10 +5,10 @@ body {
 #firmament{
     margin-top: 20px;    
     margin-bottom: 20px;
-    
 }
 
 #stars{
-    width: 760px;
-    margin: 0 auto;
+    width: 640px;
+    float: right;
+
 }
