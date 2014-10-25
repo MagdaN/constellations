@@ -77,8 +77,8 @@ for star in orion:
         'name': star['name'],
         'coords': {
             'sol': {
-                'ra': coord.ra.to_string(decimal=True),
-                'dec': coord.dec.to_string(decimal=True)
+                'ra': float(coord.ra.to_string(decimal=True)),
+                'dec': float(coord.dec.to_string(decimal=True))
             }
         }
     }
@@ -91,8 +91,8 @@ for star in orion:
         destination_coords.representation = 'spherical'
 
         o['coords'][star] = {
-            'ra': destination_coords.ra.to_string(decimal=True),
-            'dec': destination_coords.dec.to_string(decimal=True)
+            'ra': float(destination_coords.ra.to_string(decimal=True)),
+            'dec': float(destination_coords.dec.to_string(decimal=True))
         }
 
     output['orion'].append(o)

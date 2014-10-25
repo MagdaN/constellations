@@ -50,22 +50,44 @@ $( document ).ready(function() {
                                             .attr("y2", 700)
                                             .attr("stroke", "white");
   
-                                        
+                                
 
-  /*d3.json("data/orion.json", function(error, stars) {
 
-    var circles = svgContainer.selectAll("circle")
-                              .data(stars)
-                              .enter()
-                              .append("circle");
+  d3.json("data/orion.json", function(error, json) {
+    if (error) return console.warn(error);
+    console.log(json.orion);
 
-    var circleAttributes = circles
-                        .attr("cx", function (d) { return d.x*10; })
-                        .attr("cy", function (d) { return d.y; })
-                        .attr("name", function (d) { return d.name; })
-                        .attr("r", 5 )
-                        .attr("fill", 'red' );
-  });*/
+    var orionGroup = svgContainer.append("g");
+
+    var destination = 'sol';
+    var destination = 'Sirius';
+    var destination = 'Polaris';
+    var destination = 'Deneb';
+
+
+    orionGroup.selectAll("circle")
+      .data(json.orion)
+      .enter()
+      .append("circle")
+      .attr("cx", function (d) {
+        var x = d.coords[destination].ra;
+        //x *= 1.5;
+        //x += -20;
+        x *= (Math.PI / 180.0);
+        x = 360 - (Math.cos(x) * 360);
+        return x; 
+      })
+      .attr("cy", function (d) {
+        var y = d.coords[destination].dec;
+        //y *= 1.5;
+        //y += -30;
+        y *= (Math.PI / 180.0);
+        y = (Math.sin(y) * 360) + 360;
+        return y;
+      })
+      .attr("r",3)
+      .attr("fill","white");
+  });
 
 
 });
