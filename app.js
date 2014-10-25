@@ -26,7 +26,7 @@ ellipse_list = [
 function ra2x(ra) {
   var x = ra;
   //x *= 1.5;
-  //x += -10;
+  x += -20;
   x *= (Math.PI / 180.0);
   x = center.x - (Math.cos(x) * inner_circles[0].r);
   return x;
@@ -35,14 +35,13 @@ function ra2x(ra) {
 function dec2y(dec) {
   var y = dec;
   //y *= 1.5;
-  //y += 10;
+  //y += 20;
   y *= (Math.PI / 180.0);
   y = center.y + (Math.sin(y) * inner_circles[0].r);
   return y;
 }
 
 function transition(destination) {
-  console.log('hi');
   d3.select('#orion').selectAll("circle")
     .transition()
     .duration(2000)
@@ -50,6 +49,16 @@ function transition(destination) {
       return ra2x(d.coords[destination].ra);
     })
     .attr("cy", function (d) {
+      return dec2y(d.coords[destination].dec);
+    });
+
+  d3.select('#orion').selectAll("line")
+    .transition()
+    .duration(2000)
+    .attr("x2", function (d) {
+      return ra2x(d.coords[destination].ra);
+    })
+    .attr("y2", function (d) {
       return dec2y(d.coords[destination].dec);
     });
 }
@@ -136,9 +145,10 @@ $( document ).ready(function() {
         transition(d.name);
       });
 
-    svgContainer.append("g")
-      .attr('id','orion')
-      .selectAll("circle")
+    orionGroup = svgContainer.append("g")
+      .attr('id','orion');
+
+    orionGroup.selectAll("circle")
       .data(orion)
       .enter()
       .append("circle")
@@ -149,7 +159,26 @@ $( document ).ready(function() {
         return dec2y(d.coords['Sol'].dec);
       })
       .attr("r", 3)
-      .attr("fill","white");
+      .attr("fill","white")
+      
+    orionGroup.selectAll("line")
+      .data(orion)
+      .enter()
+      .append("line")
+      .attr("x1", function (d) {
+        return center.x;
+      })
+      .attr("x2", function (d) {
+        return ra2x(d.coords['Sol'].ra);
+      })
+      .attr("y1", function (d) {
+        return center.y;
+      })
+      .attr("y2", function (d) {
+        return dec2y(d.coords['Sol'].dec);
+      })
+      .attr("stroke-width","0.4")
+      .attr("stroke","white");
   
   });
 
