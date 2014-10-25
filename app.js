@@ -66,6 +66,48 @@ $( document ).ready(function() {
                           .attr("stroke", "white")
                           .style("stroke-dasharray", ("6, 10"));
 
+  var buttonGroup = svgContainer.append("g");
+  var textfield = svgContainer.append("rect")
+                                .attr("id", 'textfield')
+                                .attr("x", 60)
+                                .attr("y", 300)
+                                .attr("width", 120)
+                                .attr("height", 40)
+                                .attr("class", "legend")
+                                .style("fill", "white")
+                                .style("visibility", "hidden");
+                                
+
+  var stars =  [
+    {'name': 'Sol','ry': 200},
+    {'name': 'Sirius','ry': 280},
+    {'name':'Polaris','ry': 360},
+    {'name':'Deneb','ry': 440}
+  ];
+
+
+
+  buttonGroup.selectAll("circle")
+                  .data(stars)
+                  .enter()
+                  .append("circle")
+                  .attr("cx", 20)
+                  .attr("cy", function (d) { return d.ry; } )
+                  .attr("r", 20)
+                  .attr("fill", "white")
+                  .attr("stroke", "white")
+                  .attr("name", function (d) { return d.name; })
+                  .on("click", function(d){
+                    d3.select('#textfield').style("visibility", "visible");
+
+                  });
+
+
+
+
+
+
+
   d3.json("data/orion.json", function(error, json) {
     if (error) return console.warn(error);
 
@@ -83,7 +125,7 @@ $( document ).ready(function() {
             x += -10;
             x *= (Math.PI / 180.0);
             x = center.x - (Math.cos(x) * inner_circles[0].r);
-            return x; 
+            return x;
           })
           .attr("cy", function (d) {
             var y = d.coords[destination].dec;
