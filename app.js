@@ -4,7 +4,7 @@ $( document ).ready(function() {
   var center = {
     'x': 800,
     'y': 320
-  }
+  };
 
   outer_circle = {
     'r': 310
