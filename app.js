@@ -73,7 +73,7 @@ $( document ).ready(function() {
             x += -10;
             x *= (Math.PI / 180.0);
             x = 360 - (Math.cos(x) * 360);
-            return x; 
+            return x;
           })
           .attr("cy", function (d) {
             var y = d.coords[destination].dec;
