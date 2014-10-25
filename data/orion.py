@@ -76,7 +76,7 @@ for star in orion:
         'designation': designation,
         'name': star['name'],
         'coords': {
-            'sol': {
+            'Sol': {
                 'ra': float(coord.ra.to_string(decimal=True)),
                 'dec': float(coord.dec.to_string(decimal=True))
             }
