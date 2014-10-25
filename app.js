@@ -111,19 +111,30 @@ $( document ).ready(function() {
                                 .style("fill", "white")
                                 .style("visibility", "hidden");
 
-  var stars =  [
-    {'name': 'Sol',    'ry': 200},
-    {'name': 'Sirius', 'ry': 280},
-    {'name': 'Polaris','ry': 360},
-    {'name': 'Deneb',  'ry': 440}
-  ];
-
-
   d3.json("data/orion.json", function(error, json) {
     if (error) return console.warn(error);
 
     orion = json.orion;
     destinations = json.destinations;
+
+    for (var i=0; i<destinations.length; i++) {
+      destinations[i]['y'] = 200 + 80 * i;
+    }
+
+    buttonGroup.selectAll("circle")
+      .data(destinations)
+      .enter()
+      .append("circle")
+      .attr("cx", 20)
+      .attr("cy", function (d) { return d.y; } )
+      .attr("r", 20)
+      .attr("fill", "white")
+      .attr("stroke", "white")
+      .attr("name", function (d) { return d.name; })
+      .on("click", function(d){
+        d3.select('#textfield').style("visibility", "visible");
+        transition(d.name);
+      });
 
     svgContainer.append("g")
       .attr('id','orion')
@@ -140,30 +151,7 @@ $( document ).ready(function() {
       .attr("r", 3)
       .attr("fill","white");
   
-console.log(destinations);
-
-  buttonGroup.selectAll("circle")
-                  .data(stars)
-                  .enter()
-                  .append("circle")
-                  .attr("cx", 20)
-                  .attr("cy", function (d) { return d.ry; } )
-                  .attr("r", 20)
-                  .attr("fill", "white")
-                  .attr("stroke", "white")
-                  .attr("name", function (d) { return d.name; })
-                  .on("click", function(d){
-                    d3.select('#textfield').style("visibility", "visible");
-                    transition(d.name);
-                  });
-
-
-
   });
-
-  
-
-
 
   random_stars = [];
 
