@@ -110,36 +110,13 @@ $( document ).ready(function() {
                                 .attr("class", "legend")
                                 .style("fill", "white")
                                 .style("visibility", "hidden");
-                                
 
   var stars =  [
-    {'name': 'Sol','ry': 200},
-    {'name': 'Sirius','ry': 280},
-    {'name':'Polaris','ry': 360},
-    {'name':'Deneb','ry': 440}
+    {'name': 'Sol',    'ry': 200},
+    {'name': 'Sirius', 'ry': 280},
+    {'name': 'Polaris','ry': 360},
+    {'name': 'Deneb',  'ry': 440}
   ];
-
-
-
-  buttonGroup.selectAll("circle")
-                  .data(stars)
-                  .enter()
-                  .append("circle")
-                  .attr("cx", 20)
-                  .attr("cy", function (d) { return d.ry; } )
-                  .attr("r", 20)
-                  .attr("fill", "white")
-                  .attr("stroke", "white")
-                  .attr("name", function (d) { return d.name; })
-                  .on("click", function(d){
-                    d3.select('#textfield').style("visibility", "visible");
-
-                  });
-
-
-
-
-
 
 
   d3.json("data/orion.json", function(error, json) {
@@ -162,9 +139,31 @@ $( document ).ready(function() {
       })
       .attr("r", 3)
       .attr("fill","white");
-    });
+  
+console.log(destinations);
 
-  setTimeout("transition('Polaris')", 100);
+  buttonGroup.selectAll("circle")
+                  .data(stars)
+                  .enter()
+                  .append("circle")
+                  .attr("cx", 20)
+                  .attr("cy", function (d) { return d.ry; } )
+                  .attr("r", 20)
+                  .attr("fill", "white")
+                  .attr("stroke", "white")
+                  .attr("name", function (d) { return d.name; })
+                  .on("click", function(d){
+                    d3.select('#textfield').style("visibility", "visible");
+                    transition(d.name);
+                  });
+
+
+
+  });
+
+  
+
+
 
   random_stars = [];
 
@@ -190,7 +189,6 @@ $( document ).ready(function() {
       return d.x;
     })
     .attr("cy", function (d) {
-     console.log(d.dec);
       return d.y;
     })
     .attr("r", function (d) {

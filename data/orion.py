@@ -57,7 +57,10 @@ for star in stars:
     destinations[star] = get_coord(star)
 
 output = {
-    'destinations': [],
+    'destinations': [{
+        'name': 'Sol',
+        'distance': 0
+    }],
     'orion': []
 }
 
