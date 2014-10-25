@@ -1,0 +1,14 @@
+body {
+    background-color: black;
+}
+
+#firmament{
+    margin-top: 20px;    
+    margin-bottom: 20px;
+    
+}
+
+#stars{
+    width: 720px;
+    margin: 0 auto;
+}
