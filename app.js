@@ -1,5 +1,6 @@
 var orion = null;
 var destinations = null;
+var path = null;
 
 var total_width = 1120;
 var center = {
@@ -42,7 +43,7 @@ function dec2y(dec) {
 }
 
 function transition(destination) {
-  d3.select('#orion').selectAll("circle")
+  d3.select('#orion-stars').selectAll("circle")
     .transition()
     .duration(2000)
     .attr("cx", function (d) {
@@ -52,7 +53,7 @@ function transition(destination) {
       return dec2y(d.coords[destination].dec);
     });
 
-  d3.select('#orion').selectAll("line")
+  d3.select('#orion-rays').selectAll("line")
     .transition()
     .duration(2000)
     .attr("x2", function (d) {
@@ -61,6 +62,23 @@ function transition(destination) {
     .attr("y2", function (d) {
       return dec2y(d.coords[destination].dec);
     });
+
+  d3.select('#orion-path').selectAll("line")
+    .transition()
+    .duration(2000)
+    .attr("x1", function (d) {
+      return ra2x(orion[d[0]].coords[destination].ra);
+    })
+    .attr("x2", function (d) {
+      return ra2x(orion[d[1]].coords[destination].ra);
+    })
+    .attr("y1", function (d) {
+      return dec2y(orion[d[0]].coords[destination].dec);
+      
+    })
+    .attr("y2", function (d) {
+      return dec2y(orion[d[1]].coords[destination].dec);
+    })
 }
 
 $( document ).ready(function() {
@@ -125,6 +143,7 @@ $( document ).ready(function() {
 
     orion = json.orion;
     destinations = json.destinations;
+    path = json.path;
 
     for (var i=0; i<destinations.length; i++) {
       destinations[i]['y'] = 200 + 80 * i;
@@ -145,23 +164,26 @@ $( document ).ready(function() {
         transition(d.name);
       });
 
-    orionGroup = svgContainer.append("g")
-      .attr('id','orion');
+    var destination = 'Sol';
 
-    orionGroup.selectAll("circle")
+    svgContainer.append("g")
+      .attr('id','orion-stars')
+      .selectAll("circle")
       .data(orion)
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return ra2x(d.coords['Sol'].ra);
+        return ra2x(d.coords[destination].ra);
       })
       .attr("cy", function (d) {
-        return dec2y(d.coords['Sol'].dec);
+        return dec2y(d.coords[destination].dec);
       })
       .attr("r", 3)
       .attr("fill","white")
       
-    orionGroup.selectAll("line")
+    svgContainer.append("g")
+      .attr('id','orion-rays')
+      .selectAll("line")
       .data(orion)
       .enter()
       .append("line")
@@ -169,15 +191,37 @@ $( document ).ready(function() {
         return center.x;
       })
       .attr("x2", function (d) {
-        return ra2x(d.coords['Sol'].ra);
+        return ra2x(d.coords[destination].ra);
       })
       .attr("y1", function (d) {
         return center.y;
       })
       .attr("y2", function (d) {
-        return dec2y(d.coords['Sol'].dec);
+        return dec2y(d.coords[destination].dec);
       })
       .attr("stroke-width","0.4")
+      .attr("stroke","white");
+
+    svgContainer.append("g")
+      .attr('id','orion-path')
+      .selectAll("line")
+      .data(path)
+      .enter()
+      .append("line")
+      .attr("x1", function (d) {
+        return ra2x(orion[d[0]].coords[destination].ra);
+      })
+      .attr("x2", function (d) {
+        return ra2x(orion[d[1]].coords[destination].ra);
+      })
+      .attr("y1", function (d) {
+        return dec2y(orion[d[0]].coords[destination].dec);
+        
+      })
+      .attr("y2", function (d) {
+        return dec2y(orion[d[1]].coords[destination].dec);
+      })
+      .attr("stroke-width","1")
       .attr("stroke","white");
   
   });

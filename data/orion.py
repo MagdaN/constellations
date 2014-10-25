@@ -41,6 +41,12 @@ orion = [
     }
 ]
 
+path = [
+    (0,4),(4,5), # left
+    (2,6),(6,1), # right
+    (4,3),(3,6)  # belt
+]
+
 def get_coord(star):
     print star
     result = Simbad.query_object(star)[0]
@@ -61,7 +67,8 @@ output = {
         'name': 'Sol',
         'distance': 0
     }],
-    'orion': []
+    'orion': [],
+    'path': path
 }
 
 for star in destinations:
