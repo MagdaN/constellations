@@ -1,72 +1,53 @@
 $( document ).ready(function() {
 
+  var total_width = 740;
+  var total_r     = 360;
+  circle_list = [{'r': 360}, {'r': 25}, {'r': 50}];
+  ellipse_list = [{'rx': 360, 'ry':90}, {'rx':360, 'ry': 250}, {'rx': 90, 'ry': 360}, {'rx': 250, 'ry': 360}];
+
+
   var svgContainer = d3.select("#stars").append("svg")
-                                        .attr("width", 700)
-                                        .attr("height", 700);
-
-  var firnament_outer = svgContainer.append("circle")
-                                      .attr("cx", 350)
-                                      .attr("cy", 350)
-                                      .attr("r", 350)
-                                      .attr("fill", "black")
-                                      .attr("stroke", "white");
-
-  var firnament = svgContainer.append("circle")
-                                      .attr("cx", 350)
-                                      .attr("cy", 350)
-                                      .attr("r", 340)
-                                      .attr("fill", "black")
-                                      .attr("stroke", "white");
-
-  var horizontal_elipse = svgContainer.append("ellipse")
-                            .attr("cx", 350)
-                            .attr("cy", 350)
-                            .attr("rx", 340)
-                            .attr("ry",80)
-                            .attr("fill", "black")
-                            .attr("stroke", "white")
-                            .style("stroke-dasharray", ("6, 10"));
-
-  var vertical_elipse = svgContainer.append("ellipse")
-                            .attr("cx", 350)
-                            .attr("cy", 350)
-                            .attr("rx", 80)
-                            .attr("ry",340)
-                            .attr("fill", "transparent")
-                            .attr("stroke", "white")
-                            .style("stroke-dasharray", ("6, 10"));
-
-  var horizontal_line = svgContainer.append("line")
-                                            .attr("x1", 10)
-                                            .attr("y1", 350)
-                                            .attr("x2", 690)
-                                            .attr("y2", 350)
-                                            .attr("stroke", "white");
-
-  var vertical_line = svgContainer.append("line")
-                                            .attr("x1", 350)
-                                            .attr("y1", 0)
-                                            .attr("x2", 350)
-                                            .attr("y2", 700)
-                                            .attr("stroke", "white");
+                          .attr("width", total_width)
+                          .attr("height", total_width);
   
-                                        
+  var circleGroup = svgContainer.append("g");
+  var elipseGroup = svgContainer.append("g");
 
-  /*d3.json("data/orion.json", function(error, stars) {
+  circleGroup.selectAll("circle")
+                          .data(circle_list)
+                          .enter()
+                          .append("circle")
+                          .attr("cx", total_r)
+                          .attr("cy", total_r)
+                          .attr("r", function (d) { return d.r; })
+                          .attr("fill","transparent")
+                          .attr("stroke","white");
 
-    var circles = svgContainer.selectAll("circle")
-                              .data(stars)
-                              .enter()
-                              .append("circle");
+  circleGroup.append("circle")
+                          .attr("cx", total_r)
+                          .attr("cy", total_r)
+                          .attr("r", total_r + 10)
+                          .attr("fill", "transparent")
+                          .attr("stroke", "white")
+                          .attr("stroke-width", 4);
 
-    var circleAttributes = circles
-                        .attr("cx", function (d) { return d.x*10; })
-                        .attr("cy", function (d) { return d.y; })
-                        .attr("name", function (d) { return d.name; })
-                        .attr("r", 5 )
-                        .attr("fill", 'red' );
-  });*/
+  circleGroup.append("circle")
+                          .attr("cx", total_r)
+                          .attr("cy", total_r)
+                          .attr("r", 20)
+                          .attr("fill", "white")
+                          .attr("stroke", "white");
 
-
+  elipseGroup.selectAll("ellipse")
+                          .data(ellipse_list)
+                          .enter()
+                          .append("ellipse")
+                          .attr("cx", total_r)
+                          .attr("cy", total_r)
+                          .attr("rx", function (d) { return d.rx;})
+                          .attr("ry",function (d) { return d.ry;})
+                          .attr("fill", "transparent")
+                          .attr("stroke", "white")
+                          .style("stroke-dasharray", ("6, 10"));
 });
 
