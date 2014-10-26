@@ -110,6 +110,15 @@ $( document ).ready(function() {
     .attr("fill","transparent")
     .attr("stroke","white");
 
+<<<<<<< HEAD
+  circleGroup.append("image")
+                          .attr('xlink:href', 'img/Sol.png')
+                          .attr('id', 'image_Sol')
+                          .attr("x", center.x -75)
+                          .attr("y", center.y -75)
+                          .attr('width', 150)
+                          .attr('height', 150);
+=======
   svgContainer.append("g")
     .append("circle")
     .attr("cx", center.x)
@@ -121,11 +130,12 @@ $( document ).ready(function() {
 
   svgContainer.append("g")
     .append("image")
-    .attr('xlink:href', 'img/Sol.png')
+    .attr('xlink:href', 'img/canis_mayoris.png')
     .attr("x", center.x - 75)
     .attr("y", center.y - 75)
     .attr('width', 150)
     .attr('height', 150);
+>>>>>>> baa8315bb750de9483efdc7ffdd0a5b78f3bcb49
     
   svgContainer.append("g")
     .selectAll("ellipse")
