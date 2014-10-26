@@ -160,10 +160,11 @@ $( document ).ready(function() {
       .append("rect")
       .attr("id", function (d) { return 'textfield_' + d.name;})
       .attr("x", 160)
-      .attr("y", function (d) {return d.y + 50;})
+      .attr("y", function (d) {return d.y + 55;})
       .attr("width", 120)
       .attr("height", 40)
-      .style("fill", "white")
+      .style("fill", "transparent")
+      .attr("stroke", "white")
       .style("visibility", "hidden");
 
     textfieldGroup.selectAll("text")
@@ -171,7 +172,8 @@ $( document ).ready(function() {
       .enter()
       .append("text")
       .attr("x", 170)
-      .attr("y", function (d) { return (d.y + 75);})
+      .attr("fill", "white")
+      .attr("y", function (d) { return (d.y + 80);})
       .attr("id", function (d) {return 'text_' + d.name;})
       .style("visibility", "hidden")
       .text(function(d) { return d.name; });
