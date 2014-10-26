@@ -34,23 +34,22 @@ destinations_input = json.loads(open('destinations_input.json').read())
 orion_input        = json.loads(open('orion_input.json').read())
 
 destination_coords = {}
-destinations = [{
-    "amag": 4.83,
-    "diantance_ly": 0.00001581,
-    "distance": 0.000004848,
-    "name": "Sol",
-    "spectype": "G2V",
-    "vmag": -26.74
-}]
-for destination in destinations_input:
-    
+destinations = []
+
+sol = {}
+for key in destinations_input[0]:
+    sol[key] = destinations_input[0][key]
+destinations.append(sol)
+
+for destination in destinations_input[1:]:
     coord,spectype,vmag,amag = query_simbad(destination['name'])
 
     destination_coords[destination['name']] = coord
     destinations.append({
         'name': destination['name'],
+        'description': destination['description'],
         'distance': coord.distance,
-        'diantance_ly': coord.distance.to('lyr'),
+        'distance_ly': coord.distance.to('lyr'),
         'spectype': spectype,
         'vmag': vmag,
         'amag': amag
