@@ -11,7 +11,7 @@ var center = {
 
 black_circle = {
   'r': 330
-}
+};
 outer_circle = {
   'r': 310
 };
@@ -82,7 +82,7 @@ function transition(destination) {
     })
     .attr("y2", function (d) {
       return dec2y(orion[d[1]].coords[destination].dec);
-    })
+    });
 }
 
 $( document ).ready(function() {
@@ -139,15 +139,8 @@ $( document ).ready(function() {
                           .attr("stroke", "white");
 
   var buttonGroup = svgContainer.append("g");
-  var textfield = svgContainer.append("rect")
-                                .attr("id", 'textfield')
-                                .attr("x", 60)
-                                .attr("y", 300)
-                                .attr("width", 120)
-                                .attr("height", 40)
-                                .attr("class", "legend")
-                                .style("fill", "white")
-                                .style("visibility", "hidden");
+  var textfieldGroup = svgContainer.append("g");
+  var textGroup = svgContainer.append("g");
 
   d3.json("data/orion.json", function(error, json) {
     if (error) return console.warn(error);
@@ -160,6 +153,29 @@ $( document ).ready(function() {
       destinations[i]['y'] = 200 + 80 * i;
     }
 
+    textfieldGroup.selectAll("rect")
+      .data(destinations)
+      .enter()
+      .append("rect")
+      .attr("id", function (d) { return 'textfield_' + d.name;})
+      .attr("x", 60)
+      .attr("y", function (d) {return d.y - 20;})
+      .attr("width", 120)
+      .attr("height", 40)
+      .style("fill", "white")
+      .style("visibility", "hidden");
+
+    textfieldGroup.selectAll("text")
+      .data(destinations)
+      .enter()
+      .append("text")
+      .attr("x", 70)
+      .attr("y", function (d) { return (d.y + 5);})
+      .attr("id", function (d) {return 'text_' + d.name;})
+      .style("visibility", "hidden")
+      .text(function(d) { return d.name; });
+      
+
     buttonGroup.selectAll("circle")
       .data(destinations)
       .enter()
@@ -171,11 +187,18 @@ $( document ).ready(function() {
       .attr("stroke", "white")
       .attr("name", function (d) { return d.name; })
       .on("click", function(d){
-        d3.select('#textfield')
-                  .style("visibility", "visible")
-                  .text(d.name);
         transition(d.name);
+      })
+      .on("mouseover", function (d){
+        d3.select('#textfield_' + d.name).style("visibility", "visible");
+        d3.select('#text_' + d.name).style("visibility", "visible");
+      })
+      .on("mouseout", function (d){
+        d3.select('#textfield_' + d.name).style("visibility", "hidden");
+        d3.select('#text_' + d.name).style("visibility", "hidden");
       });
+
+
 
     var destination = 'Sol';
 
@@ -236,7 +259,7 @@ $( document ).ready(function() {
         return dec2y(orion[d[1]].coords[destination].dec);
       })
       .attr("stroke-width","2")
-      .attr("stroke","white")
+      .attr("stroke","white");
   
   });
 
