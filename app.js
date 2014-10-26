@@ -183,7 +183,7 @@ $( document ).ready(function() {
     .data(destinations)
     .enter()
     .append("image")
-    .attr('xlink:href', 'img/canis_mayoris.png')
+    .attr('xlink:href', function (d) { return 'img/' + d.name + '.png'; })
     .attr("x", 20)
     .attr("y", function (d) { return d.y; } )
     .attr('width', 150)
