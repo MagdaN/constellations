@@ -1,5 +1,15 @@
 [
     {
+        "name": "Sol",
+        "description": "The Sun is the star at the center of our Solar System. It is a G-type main-sequence star and comprises about 99.86% of the total mass of the Solar System.",
+        "amag": 4.83,
+        "distance_ly": 0.00001581,
+        "distance": 0.000004848,
+        "name": "Sol",
+        "spectype": "G2V",
+        "vmag": -26.74
+    },
+    {
         "name": "Sirius",
         "description": "Sirius is the brightest star in the night sky. What the naked eye perceives as a single star is actually a binary star system, consisting of a white main-sequence star of spectral type A1V, termed Sirius A, and a faint white dwarf companion of spectral type DA2, called Sirius B."
     },
