@@ -16,7 +16,7 @@ var outer_circle = {
 };
 var inner_circles = [
   {'r': 300},
-  {'r':  30},
+  {'r':  40},
   {'r':  80}
 ];
 var ellipse_list = [
@@ -119,14 +119,6 @@ $( document ).ready(function() {
     .attr("stroke-width", 2);
 
   svgContainer.append("g")
-    .append("image")
-    .attr('xlink:href', 'img/sphere.png')
-    .attr("x", center.x - 35)
-    .attr("y", center.y - 35)
-    .attr('width', 70)
-    .attr('height', 70);
-    
-  svgContainer.append("g")
     .selectAll("ellipse")
     .data(ellipse_list)
     .enter()
@@ -137,6 +129,38 @@ $( document ).ready(function() {
     .attr("ry", function (d) { return d.ry; })
     .attr("fill", "transparent")
     .attr("stroke", "white");
+
+  random_stars = [];
+
+  for (var i=0; i<2000; i++) {
+    var random_star = {
+      r: Math.random(),
+      x: ra2x(Math.random() * 180),
+      y: dec2y((Math.random() - 0.5) * 180)
+    };
+
+    var dist = Math.sqrt(Math.pow(random_star.x - center.x,2) + Math.pow(random_star.y - center.y,2));
+
+    if (dist < inner_circles[0].r) {
+      random_stars.push(random_star);
+    }
+  }
+
+  svgContainer.append("g").selectAll("circle")
+    .data(random_stars)
+    .enter()
+    .append("circle")
+    .attr("cx", function (d) {
+      return d.x;
+    })
+    .attr("cy", function (d) {
+      return d.y;
+    })
+    .attr("r", function (d) {
+      return d.r;
+    })
+    .attr("fill","white");
+
 
   d3.json("data/orion.json", function(error, json) {
     if (error) return console.warn(error);
@@ -354,37 +378,13 @@ $( document ).ready(function() {
       .attr("stroke-width","2")
       .attr("stroke","white");
   
+    svgContainer.append("g")
+      .append("image")
+      .attr('xlink:href', 'img/sphere2.png')
+      .attr("x", center.x - 35)
+      .attr("y", center.y - 35)
+      .attr('width', 70)
+      .attr('height', 70);
+
   });
-
-  random_stars = [];
-
-  for (var i=0; i<2000; i++) {
-    var random_star = {
-      r: Math.random(),
-      x: ra2x(Math.random() * 180),
-      y: dec2y((Math.random() - 0.5) * 180)
-    };
-
-    var dist = Math.sqrt(Math.pow(random_star.x - center.x,2) + Math.pow(random_star.y - center.y,2));
-
-    if (dist < inner_circles[0].r) {
-      random_stars.push(random_star);
-    }
-  }
-
-  svgContainer.append("g").selectAll("circle")
-    .data(random_stars)
-    .enter()
-    .append("circle")
-    .attr("cx", function (d) {
-      return d.x;
-    })
-    .attr("cy", function (d) {
-      return d.y;
-    })
-    .attr("r", function (d) {
-      return d.r;
-    })
-    .attr("fill","white");
-
 });
