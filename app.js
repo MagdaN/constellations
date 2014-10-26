@@ -10,8 +10,10 @@ var center = {
 };
 
 black_circle = {
+
   'r': 330
 };
+
 outer_circle = {
   'r': 310
 };
@@ -108,9 +110,7 @@ $( document ).ready(function() {
                           .attr("cx", center.x)
                           .attr("cy", center.y)
                           .attr("r", black_circle.r)
-                          .attr("fill", "black")
-                          .attr("stroke", "white")
-                          .attr("stroke-width", 2);
+                          .attr("fill", "black");
 
   circleGroup.append("circle")
                           .attr("cx", center.x)
