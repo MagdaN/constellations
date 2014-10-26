@@ -93,55 +93,52 @@ $( document ).ready(function() {
                           .attr("width", total_width)
                           .attr("height", total_height);
   
-  var circleGroup = svgContainer.append("g");
-  var elipseGroup = svgContainer.append("g");
+  svgContainer.append("g")
+    .append("circle")
+    .attr("cx", center.x)
+    .attr("cy", center.y)
+    .attr("r", black_circle.r)
+    .attr("fill", "black");
 
-  circleGroup.selectAll("circle")
-                          .data(inner_circles)
-                          .enter()
-                          .append("circle")
-                          .attr("cx", center.x)
-                          .attr("cy", center.y)
-                          .attr("r", function (d) { return d.r; })
-                          .attr("fill","transparent")
-                          .attr("stroke","white");
+  svgContainer.append("g")
+    .selectAll("circle")
+    .data(inner_circles)
+    .enter()
+    .append("circle")
+    .attr("cx", center.x)
+    .attr("cy", center.y)
+    .attr("r", function (d) { return d.r; })
+    .attr("fill","transparent")
+    .attr("stroke","white");
 
-  circleGroup.append("circle")
-                          .attr("cx", center.x)
-                          .attr("cy", center.y)
-                          .attr("r", black_circle.r)
-                          .attr("fill", "black");
+  svgContainer.append("g")
+    .append("circle")
+    .attr("cx", center.x)
+    .attr("cy", center.y)
+    .attr("r", outer_circle.r)
+    .attr("fill", "transparent")
+    .attr("stroke", "white")
+    .attr("stroke-width", 2);
 
-  circleGroup.append("circle")
-                          .attr("cx", center.x)
-                          .attr("cy", center.y)
-                          .attr("r", outer_circle.r)
-                          .attr("fill", "transparent")
-                          .attr("stroke", "white")
-                          .attr("stroke-width", 2);
-
-  circleGroup.append("image")
-                          .attr('xlink:href', 'img/canis_mayoris.png')
-                          .attr("x", center.x -75)
-                          .attr("y", center.y -75)
-                          .attr('width', 150)
-                          .attr('height', 150);
+  svgContainer.append("g")
+    .append("image")
+    .attr('xlink:href', 'img/canis_mayoris.png')
+    .attr("x", center.x - 75)
+    .attr("y", center.y - 75)
+    .attr('width', 150)
+    .attr('height', 150);
     
-
-  elipseGroup.selectAll("ellipse")
-                          .data(ellipse_list)
-                          .enter()
-                          .append("ellipse")
-                          .attr("cx", center.x)
-                          .attr("cy", center.y)
-                          .attr("rx", function (d) { return d.rx;})
-                          .attr("ry",function (d) { return d.ry;})
-                          .attr("fill", "transparent")
-                          .attr("stroke", "white");
-
-  var buttonGroup = svgContainer.append("g");
-  var textfieldGroup = svgContainer.append("g");
-  var textGroup = svgContainer.append("g");
+  svgContainer.append("g")
+    .selectAll("ellipse")
+    .data(ellipse_list)
+    .enter()
+    .append("ellipse")
+    .attr("cx", center.x)
+    .attr("cy", center.y)
+    .attr("rx", function (d) { return d.rx; })
+    .attr("ry", function (d) { return d.ry; })
+    .attr("fill", "transparent")
+    .attr("stroke", "white");
 
   d3.json("data/orion.json", function(error, json) {
     if (error) return console.warn(error);
@@ -154,7 +151,8 @@ $( document ).ready(function() {
       destinations[i]['y'] = 110 + 100 * i;
     }
 
-    textfieldGroup.selectAll("rect")
+    svgContainer.append("g")
+      .selectAll("rect")
       .data(destinations)
       .enter()
       .append("rect")
@@ -167,7 +165,8 @@ $( document ).ready(function() {
       .attr("stroke", "white")
       .style("visibility", "hidden");
 
-    textfieldGroup.selectAll("text")
+    svgContainer.append("g")
+      .selectAll("text")
       .data(destinations)
       .enter()
       .append("text")
@@ -178,8 +177,7 @@ $( document ).ready(function() {
       .style("visibility", "hidden")
       .text(function(d) { return d.name; });
 
-
-  buttonGroup.selectAll("image")
+  svgContainer.append("g").selectAll("image")
     .data(destinations)
     .enter()
     .append("image")
@@ -199,7 +197,6 @@ $( document ).ready(function() {
         d3.select('#textfield_' + d.name).style("visibility", "hidden");
         d3.select('#text_' + d.name).style("visibility", "hidden");
       });
-
 
     var destination = 'Sol';
 
