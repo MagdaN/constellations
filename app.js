@@ -184,7 +184,7 @@ $( document ).ready(function() {
       .attr("y", function (d) { return (d.y + box_offset + 40);})
       .attr("id", function (d) {return 'distance_' + d.name;})
       .style("visibility", "hidden")
-      .text(function(d) { return 'Distance: ' + d.distance + `' lyr'; });
+      .text(function(d) { return 'Distance: ' + d.distance + ' lyr'; });
 
     svgContainer.append("g")
       .selectAll("text")
