@@ -176,11 +176,34 @@ $( document ).ready(function() {
       .style("visibility", "hidden")
       .text(function(d) { return d.name; });
 
-    svgContainer.append("g").selectAll("image")
+    svgContainer.append("g")
+      .selectAll("image")
       .data(destinations)
       .enter()
       .append("image")
       .attr('xlink:href', 'img/canis_mayoris.png')
+      .attr("x", 20)
+      .attr("y", function (d) { return d.y; } )
+      .attr('width', 150)
+      .attr('height', 150)
+      .on("click", function(d){
+          transition(d.name);
+        })
+        .on("mouseover", function (d){
+          d3.select('#textfield_' + d.name).style("visibility", "visible");
+          d3.select('#text_' + d.name).style("visibility", "visible");
+        })
+        .on("mouseout", function (d){
+          d3.select('#textfield_' + d.name).style("visibility", "hidden");
+          d3.select('#text_' + d.name).style("visibility", "hidden");
+        });
+
+    svgContainer.append("g")
+      .selectAll("image")
+      .data(destinations)
+      .enter()
+      .append("image")
+      .attr('xlink:href', function (d) { return 'img/' + d.name + '.png'; })
       .attr("x", 20)
       .attr("y", function (d) { return d.y; } )
       .attr('width', 150)
