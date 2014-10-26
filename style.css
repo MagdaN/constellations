@@ -1,5 +1,19 @@
+* {
+    color: #777;
+    font-size: 11px;
+}
+
+a {
+    color: #bbb;
+}
+
+a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
 body {
-    background-color: #333;
+    background-color: #222;
 }
 
 #firmament{
@@ -16,4 +30,10 @@ body {
     position: fixed;
     left: 50px;
     top: 50px;
+}
+
+span {
+    position: fixed;
+    bottom: 40px;
+    left: 50px;
 }
