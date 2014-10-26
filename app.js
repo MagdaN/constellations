@@ -121,7 +121,8 @@ $( document ).ready(function() {
                           .attr("stroke-width", 2);
 
   circleGroup.append("image")
-                          .attr('xlink:href', 'img/canis_mayoris.png')
+                          .attr('xlink:href', 'img/Sol.png')
+                          .attr('id', 'image_Sol')
                           .attr("x", center.x -75)
                           .attr("y", center.y -75)
                           .attr('width', 150)
