@@ -8,26 +8,24 @@ var center = {
   'x': 800,
   'y': 340
 };
-
-black_circle = {
+var black_circle = {
   'r': 330
 };
-
-outer_circle = {
+var outer_circle = {
   'r': 310
 };
-inner_circles = [
+var inner_circles = [
   {'r': 300},
   {'r':  30},
   {'r':  80}
 ];
-
-ellipse_list = [
+var ellipse_list = [
   {'rx': 300, 'ry':  60},
   {'rx': 300, 'ry': 180},
   {'rx':  60, 'ry': 300},
   {'rx': 180, 'ry': 300}
 ];
+var box_offset = 30;
 
 function ra2x(ra) {
   var x = ra;
@@ -157,9 +155,9 @@ $( document ).ready(function() {
       .append("rect")
       .attr("id", function (d) { return 'textfield_' + d.name;})
       .attr("x", 160)
-      .attr("y", function (d) {return d.y + 55;})
-      .attr("width", 120)
-      .attr("height", 40)
+      .attr("y", function (d) {return d.y + box_offset;})
+      .attr("width", 250)
+      .attr("height", 90)
       .style("fill", "transparent")
       .attr("stroke", "white")
       .style("visibility", "hidden");
@@ -171,32 +169,54 @@ $( document ).ready(function() {
       .append("text")
       .attr("x", 170)
       .attr("fill", "white")
-      .attr("y", function (d) { return (d.y + 80);})
-      .attr("id", function (d) {return 'text_' + d.name;})
+      .attr("y", function (d) { return (d.y + box_offset + 20);})
+      .attr("id", function (d) {return 'name_' + d.name;})
       .style("visibility", "hidden")
-      .text(function(d) { return d.name; });
+      .text(function(d) { 
+        return d.name;
+      });
 
     svgContainer.append("g")
-      .selectAll("image")
+      .selectAll("text")
       .data(destinations)
       .enter()
-      .append("image")
-      .attr('xlink:href', 'img/canis_mayoris.png')
-      .attr("x", 20)
-      .attr("y", function (d) { return d.y; } )
-      .attr('width', 150)
-      .attr('height', 150)
-      .on("click", function(d){
-          transition(d.name);
-        })
-        .on("mouseover", function (d){
-          d3.select('#textfield_' + d.name).style("visibility", "visible");
-          d3.select('#text_' + d.name).style("visibility", "visible");
-        })
-        .on("mouseout", function (d){
-          d3.select('#textfield_' + d.name).style("visibility", "hidden");
-          d3.select('#text_' + d.name).style("visibility", "hidden");
-        });
+      .append("text")
+      .attr("x", 170)
+      .attr("fill", "white")
+      .attr("y", function (d) { return (d.y + box_offset + 40);})
+      .attr("id", function (d) {return 'distance_' + d.name;})
+      .style("visibility", "hidden")
+      .text(function(d) { 
+        return 'Distance: ' + d.distance + ' Lightyears';
+      });
+
+    svgContainer.append("g")
+      .selectAll("text")
+      .data(destinations)
+      .enter()
+      .append("text")
+      .attr("x", 170)
+      .attr("fill", "white")
+      .attr("y", function (d) { return d.y + box_offset + 60;})
+      .attr("id", function (d) {return 'amag_' + d.name;})
+      .style("visibility", "hidden")
+      .text(function(d) { 
+        return 'Absolute Magnitude: ' + d.amag;
+      });
+
+    svgContainer.append("g")
+      .selectAll("text")
+      .data(destinations)
+      .enter()
+      .append("text")
+      .attr("x", 170)
+      .attr("fill", "white")
+      .attr("y", function (d) { return d.y + box_offset + 80;})
+      .attr("id", function (d) {return 'type_' + d.name;})
+      .style("visibility", "hidden")
+      .text(function(d) { 
+        return 'Spectral Type: ' + d.spectype;
+      });
 
     svgContainer.append("g")
       .selectAll("image")
@@ -211,14 +231,20 @@ $( document ).ready(function() {
       .on("click", function(d){
           transition(d.name);
         })
-        .on("mouseover", function (d){
+      .on("mouseover", function (d) {
           d3.select('#textfield_' + d.name).style("visibility", "visible");
-          d3.select('#text_' + d.name).style("visibility", "visible");
-        })
-        .on("mouseout", function (d){
+          d3.select('#name_' + d.name).style("visibility", "visible");
+          d3.select('#distance_' + d.name).style("visibility", "visible");
+          d3.select('#amag_' + d.name).style("visibility", "visible");
+          d3.select('#type_' + d.name).style("visibility", "visible");
+      })
+      .on("mouseout", function (d) {
           d3.select('#textfield_' + d.name).style("visibility", "hidden");
-          d3.select('#text_' + d.name).style("visibility", "hidden");
-        });
+          d3.select('#name_' + d.name).style("visibility", "hidden");
+          d3.select('#distance_' + d.name).style("visibility", "hidden");
+          d3.select('#amag_' + d.name).style("visibility", "hidden");
+          d3.select('#type_' + d.name).style("visibility", "hidden");
+      });
 
     var destination = 'Sol';
 

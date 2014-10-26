@@ -48,11 +48,10 @@ for destination in destinations_input[1:]:
     destinations.append({
         'name': destination['name'],
         'description': destination['description'],
-        'distance': coord.distance,
-        'distance_ly': coord.distance.to('lyr'),
+        'distance': '%.1f' % float(coord.distance.to('lyr') / u.lyr),
         'spectype': spectype,
-        'vmag': vmag,
-        'amag': amag
+        'vmag': '%.1f' % float(vmag),
+        'amag': '%.1f' % float(amag)
     })
 
 output = {

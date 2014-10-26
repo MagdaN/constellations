@@ -3,8 +3,7 @@
         "name": "Sol",
         "description": "The Sun is the star at the center of our Solar System. It is a G-type main-sequence star and comprises about 99.86% of the total mass of the Solar System.",
         "amag": 4.83,
-        "distance_ly": 0.00001581,
-        "distance": 0.000004848,
+        "distance": 0.000016,
         "name": "Sol",
         "spectype": "G2V",
         "vmag": -26.74
