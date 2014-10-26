@@ -25,7 +25,8 @@ var ellipse_list = [
   {'rx':  60, 'ry': 300},
   {'rx': 180, 'ry': 300}
 ];
-var box_offset = 30;
+var box_offset = 25;
+var selected = 'Sol';
 
 function ra2x(ra) {
   var x = ra;
@@ -121,7 +122,7 @@ $( document ).ready(function() {
     .append("image")
     .attr('xlink:href', 'img/sphere.png')
     .attr("x", center.x - 35)
-    .attr("y", center.y - 35 )
+    .attr("y", center.y - 35)
     .attr('width', 70)
     .attr('height', 70);
     
@@ -149,17 +150,57 @@ $( document ).ready(function() {
     }
 
     svgContainer.append("g")
+      .append("circle")
+      .attr("cx", center.x)
+      .attr("cy", center.y)
+      .attr("r", outer_circle.r)
+      .attr("fill", "transparent")
+      .attr("stroke", "white")
+      .attr("stroke-width", 2);
+
+    svgContainer.append("g")
+      .selectAll("circle")
+      .data(destinations)
+      .enter()
+      .append("circle")
+      .attr("id", function (d) { return 'textcircle_' + d.name;})
+      .attr("cx", 95)
+      .attr("cy", function (d) {return d.y + 75;} )
+      .attr("r", 50)
+      .attr("fill", "transparent")
+      .attr("stroke", "white")
+      .attr("stroke-width", 1)
+      .style("visibility", "hidden");
+
+    svgContainer.append("g")
+      .selectAll("circle")
+      .data(destinations)
+      .enter()
+      .append("circle")
+      .attr("id", function (d) { return 'textsmallcircle_' + d.name;})
+      .attr("cx", 95)
+      .attr("cy", function (d) {return d.y + 75;} )
+      .attr("r", 35)
+      .attr("fill", "transparent")
+      .attr("stroke", "white")
+      .attr("stroke-width", 1)
+      .style("visibility", "hidden");
+
+    svgContainer.append("g")
       .selectAll("rect")
       .data(destinations)
       .enter()
       .append("rect")
       .attr("id", function (d) { return 'textfield_' + d.name;})
-      .attr("x", 160)
-      .attr("y", function (d) {return d.y + box_offset;})
-      .attr("width", 250)
-      .attr("height", 90)
+      .attr("x", 60)
+      .attr("y", function (d) {return d.y + box_offset + 15;})
+      .attr("rx", 35)
+      .attr("ry", 35)
+      .attr("width", 350)
+      .attr("height", 70)
       .style("fill", "transparent")
       .attr("stroke", "white")
+      .attr("stroke-width", 2)
       .style("visibility", "hidden");
 
     svgContainer.append("g")
@@ -169,8 +210,9 @@ $( document ).ready(function() {
       .append("text")
       .attr("x", 170)
       .attr("fill", "white")
-      .attr("y", function (d) { return (d.y + box_offset + 20);})
+      .attr("y", function (d) { return (d.y + box_offset + 35);})
       .attr("id", function (d) {return 'name_' + d.name;})
+      .attr("font-weight", "bold")
       .style("visibility", "hidden")
       .text(function(d) { return d.name; });
 
@@ -181,7 +223,7 @@ $( document ).ready(function() {
       .append("text")
       .attr("x", 170)
       .attr("fill", "white")
-      .attr("y", function (d) { return (d.y + box_offset + 40);})
+      .attr("y", function (d) { return (d.y + box_offset + 55);})
       .attr("id", function (d) {return 'distance_' + d.name;})
       .style("visibility", "hidden")
       .text(function(d) { return 'Distance: ' + d.distance + ' lyr'; });
@@ -193,22 +235,10 @@ $( document ).ready(function() {
       .append("text")
       .attr("x", 170)
       .attr("fill", "white")
-      .attr("y", function (d) { return (d.y + box_offset + 60);})
+      .attr("y", function (d) { return (d.y + box_offset + 75);})
       .attr("id", function (d) {return 'amag_' + d.name;})
       .style("visibility", "hidden")
       .text(function(d) { return 'Absolute Magnitude: ' + d.amag; });
-
-    svgContainer.append("g")
-      .selectAll("text")
-      .data(destinations)
-      .enter()
-      .append("text")
-      .attr("x", 170)
-      .attr("fill", "white")
-      .attr("y", function (d) { return (d.y + box_offset + 80);})
-      .attr("id", function (d) {return 'spectype_' + d.name;})
-      .style("visibility", "hidden")
-      .text(function(d) { return 'Specttral Type: ' + d.spectype; });
 
     svgContainer.append("g")
       .selectAll("text")
@@ -222,9 +252,24 @@ $( document ).ready(function() {
       .attr('height', 150)
       .on("click", function(d){
           transition(d.name);
+
+          d3.select('#textcircle_' + selected).style("visibility", "hidden");
+          d3.select('#name_' + selected).style("visibility", "hidden");
+          d3.select('#distance_' + selected).style("visibility", "hidden");
+          d3.select('#amag_' + selected).style("visibility", "hidden");
+          d3.select('#spectype_' + selected).style("visibility", "hidden");
+
+          selected = d.name;
+
+          d3.select('#textcircle_' + d.name).style("visibility", "visible");
+          d3.select('#name_' + d.name).style("visibility", "visible");
+          d3.select('#distance_' + d.name).style("visibility", "visible");
+          d3.select('#amag_' + d.name).style("visibility", "visible");
+          d3.select('#spectype_' + d.name).style("visibility", "visible");
         })
       .on("mouseover", function (d) {
           d3.select('#textfield_' + d.name).style("visibility", "visible");
+          d3.select('#textsmallcircle_' + d.name).style("visibility", "visible");
           d3.select('#name_' + d.name).style("visibility", "visible");
           d3.select('#distance_' + d.name).style("visibility", "visible");
           d3.select('#amag_' + d.name).style("visibility", "visible");
@@ -232,11 +277,21 @@ $( document ).ready(function() {
       })
       .on("mouseout", function (d) {
           d3.select('#textfield_' + d.name).style("visibility", "hidden");
-          d3.select('#name_' + d.name).style("visibility", "hidden");
-          d3.select('#distance_' + d.name).style("visibility", "hidden");
-          d3.select('#amag_' + d.name).style("visibility", "hidden");
-          d3.select('#spectype_' + d.name).style("visibility", "hidden");
+          d3.select('#textsmallcircle_' + d.name).style("visibility", "hidden");
+          
+          if (d.name != selected) {
+            d3.select('#name_' + d.name).style("visibility", "hidden");
+            d3.select('#distance_' + d.name).style("visibility", "hidden");
+            d3.select('#amag_' + d.name).style("visibility", "hidden");
+            d3.select('#spectype_' + d.name).style("visibility", "hidden");
+          }
       });
+
+    d3.select('#textcircle_Sol').style("visibility", "visible");
+    d3.select('#name_Sol').style("visibility", "visible");
+    d3.select('#distance_Sol').style("visibility", "visible");
+    d3.select('#amag_Sol').style("visibility", "visible");
+    d3.select('#spectype_Sol').style("visibility", "visible");
 
     var destination = 'Sol';
 
