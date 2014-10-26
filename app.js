@@ -141,7 +141,9 @@ $( document ).ready(function() {
       .attr("stroke", "white")
       .attr("name", function (d) { return d.name; })
       .on("click", function(d){
-        d3.select('#textfield').style("visibility", "visible");
+        d3.select('#textfield')
+                  .style("visibility", "visible")
+                  .text(d.name);
         transition(d.name);
       });
 
@@ -159,7 +161,7 @@ $( document ).ready(function() {
         return dec2y(d.coords['Sol'].dec);
       })
       .attr("r", 3)
-      .attr("fill","white")
+      .attr("fill","white");
       
     orionGroup.selectAll("line")
       .data(orion)
