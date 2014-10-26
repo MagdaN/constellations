@@ -2,12 +2,16 @@ var orion = null;
 var destinations = null;
 var path = null;
 
-var total_width = 1120;
+var total_width = 1140;
+var total_height = 680;
 var center = {
   'x': 800,
-  'y': 320
+  'y': 340
 };
 
+black_circle = {
+  'r': 330
+}
 outer_circle = {
   'r': 310
 };
@@ -85,7 +89,7 @@ $( document ).ready(function() {
 
   var svgContainer = d3.select("#stars").append("svg")
                           .attr("width", total_width)
-                          .attr("height", total_width);
+                          .attr("height", total_height);
   
   var circleGroup = svgContainer.append("g");
   var elipseGroup = svgContainer.append("g");
@@ -99,6 +103,14 @@ $( document ).ready(function() {
                           .attr("r", function (d) { return d.r; })
                           .attr("fill","transparent")
                           .attr("stroke","white");
+
+  circleGroup.append("circle")
+                          .attr("cx", center.x)
+                          .attr("cy", center.y)
+                          .attr("r", black_circle.r)
+                          .attr("fill", "black")
+                          .attr("stroke", "white")
+                          .attr("stroke-width", 2);
 
   circleGroup.append("circle")
                           .attr("cx", center.x)
