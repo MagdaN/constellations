@@ -13,7 +13,7 @@ a:hover {
 
 body {
     background-color: #222;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #firmament{
