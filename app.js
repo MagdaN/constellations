@@ -120,12 +120,13 @@ $( document ).ready(function() {
                           .attr("stroke", "white")
                           .attr("stroke-width", 2);
 
-  circleGroup.append("circle")
-                          .attr("cx", center.x)
-                          .attr("cy", center.y)
-                          .attr("r", 20)
-                          .attr("fill", "white")
-                          .attr("stroke", "white");
+  circleGroup.append("image")
+                          .attr('xlink:href', 'img/canis_mayoris.png')
+                          .attr("x", center.x -75)
+                          .attr("y", center.y -75)
+                          .attr('width', 150)
+                          .attr('height', 150);
+    
 
   elipseGroup.selectAll("ellipse")
                           .data(ellipse_list)
@@ -150,7 +151,7 @@ $( document ).ready(function() {
     path = json.path;
 
     for (var i=0; i<destinations.length; i++) {
-      destinations[i]['y'] = 200 + 80 * i;
+      destinations[i]['y'] = 110 + 100 * i;
     }
 
     textfieldGroup.selectAll("rect")
@@ -158,8 +159,8 @@ $( document ).ready(function() {
       .enter()
       .append("rect")
       .attr("id", function (d) { return 'textfield_' + d.name;})
-      .attr("x", 60)
-      .attr("y", function (d) {return d.y - 20;})
+      .attr("x", 160)
+      .attr("y", function (d) {return d.y + 50;})
       .attr("width", 120)
       .attr("height", 40)
       .style("fill", "white")
@@ -169,24 +170,23 @@ $( document ).ready(function() {
       .data(destinations)
       .enter()
       .append("text")
-      .attr("x", 70)
-      .attr("y", function (d) { return (d.y + 5);})
+      .attr("x", 170)
+      .attr("y", function (d) { return (d.y + 75);})
       .attr("id", function (d) {return 'text_' + d.name;})
       .style("visibility", "hidden")
       .text(function(d) { return d.name; });
-      
 
-    buttonGroup.selectAll("circle")
-      .data(destinations)
-      .enter()
-      .append("circle")
-      .attr("cx", 20)
-      .attr("cy", function (d) { return d.y; } )
-      .attr("r", 20)
-      .attr("fill", "white")
-      .attr("stroke", "white")
-      .attr("name", function (d) { return d.name; })
-      .on("click", function(d){
+
+  buttonGroup.selectAll("image")
+    .data(destinations)
+    .enter()
+    .append("image")
+    .attr('xlink:href', 'img/canis_mayoris.png')
+    .attr("x", 20)
+    .attr("y", function (d) { return d.y; } )
+    .attr('width', 150)
+    .attr('height', 150)
+    .on("click", function(d){
         transition(d.name);
       })
       .on("mouseover", function (d){
@@ -197,7 +197,6 @@ $( document ).ready(function() {
         d3.select('#textfield_' + d.name).style("visibility", "hidden");
         d3.select('#text_' + d.name).style("visibility", "hidden");
       });
-
 
 
     var destination = 'Sol';
