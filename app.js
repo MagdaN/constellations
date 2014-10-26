@@ -13,8 +13,8 @@ outer_circle = {
 };
 inner_circles = [
   {'r': 300},
-  {'r':  25},
-  {'r':  50}
+  {'r':  30},
+  {'r':  80}
 ];
 
 ellipse_list = [
@@ -106,7 +106,7 @@ $( document ).ready(function() {
                           .attr("r", outer_circle.r)
                           .attr("fill", "transparent")
                           .attr("stroke", "white")
-                          .attr("stroke-width", 4);
+                          .attr("stroke-width", 2);
 
   circleGroup.append("circle")
                           .attr("cx", center.x)
@@ -124,8 +124,7 @@ $( document ).ready(function() {
                           .attr("rx", function (d) { return d.rx;})
                           .attr("ry",function (d) { return d.ry;})
                           .attr("fill", "transparent")
-                          .attr("stroke", "white")
-                          .style("stroke-dasharray", ("6, 10"));
+                          .attr("stroke", "white");
 
   var buttonGroup = svgContainer.append("g");
   var textfield = svgContainer.append("rect")
@@ -199,8 +198,9 @@ $( document ).ready(function() {
       .attr("y2", function (d) {
         return dec2y(d.coords[destination].dec);
       })
-      .attr("stroke-width","0.4")
-      .attr("stroke","white");
+      .attr("stroke-width","1")
+      .attr("stroke","white")
+      .style("stroke-dasharray", ("4, 4"));
 
     svgContainer.append("g")
       .attr('id','orion-path')
@@ -221,8 +221,8 @@ $( document ).ready(function() {
       .attr("y2", function (d) {
         return dec2y(orion[d[1]].coords[destination].dec);
       })
-      .attr("stroke-width","1")
-      .attr("stroke","white");
+      .attr("stroke-width","2")
+      .attr("stroke","white")
   
   });
 
