@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import json,sys,math
 from astropy import units as u
@@ -7,47 +8,10 @@ from astropy.coordinates import SkyCoord
 from astropy.utils.misc import JsonCustomEncoder
 
 Simbad.add_votable_fields('parallax')
+Simbad.add_votable_fields('sptype')
+Simbad.add_votable_fields('flux(V)')
 
-stars = ['Sirius','Deneb','Polaris']
-
-orion = [
-    {
-        "designation": "alpha",
-        "name": "Beteigeuze"
-    },
-    {
-        "designation": "beta",
-        "name": "Rigel"
-    },
-    {
-        "designation": "gamma",
-        "name": "Bellatrix"
-    },
-    {
-        "designation": "epsilon",
-        "name": "Alnilam"
-    },
-    {
-        "designation": "zeta",
-        "name": "Alnitak"
-    },
-    {
-        "designation": "kappa",
-        "name": "Saiph"
-    },
-    {
-        "designation": "delta",
-        "name": "Mintaka"
-    }
-]
-
-path = [
-    (0,4),(4,5), # left
-    (2,6),(6,1), # right
-    (4,3),(3,6)  # belt
-]
-
-def get_coord(star):
+def query_simbad(star):
     print star
     result = Simbad.query_object(star)[0]
 
@@ -56,33 +20,54 @@ def get_coord(star):
     parallax = (float(result['PLX_VALUE']) * u.mas).to(u.arcsec) / u.arcsec
     distance = 1.0 / parallax * u.pc
 
-    return SkyCoord(coord_string, 'icrs', unit=(u.hourangle, u.deg), distance=distance)
+    coord = SkyCoord(coord_string, 'icrs', unit=(u.hourangle, u.deg), distance=distance)
+    spectype = result['SP_TYPE']
+    vmag = result['FLUX_V']
 
-destinations = {}
-for star in stars:
-    destinations[star] = get_coord(star)
+    dimless_distance = coord.distance / u.pc
 
-output = {
-    'destinations': [{
-        'name': 'Sol',
-        'distance': 0
-    }],
-    'orion': [],
-    'path': path
-}
+    amag = - 5 * math.log10(dimless_distance) + 5 + vmag
 
-for star in destinations:
-    output['destinations'].append({
-        'name': star,
-        'distance': destinations[star].distance
+    return coord,spectype,vmag,amag
+
+destinations_input = json.loads(open('destinations_input.json').read())
+orion_input        = json.loads(open('orion_input.json').read())
+
+destination_coords = {}
+destinations = [{
+    "amag": 4.83,
+    "diantance_ly": 0.00001581,
+    "distance": 0.000004848,
+    "name": "Sol",
+    "spectype": "G2V",
+    "vmag": -26.74
+}]
+for destination in destinations_input:
+    
+    coord,spectype,vmag,amag = query_simbad(destination['name'])
+
+    destination_coords[destination['name']] = coord
+    destinations.append({
+        'name': destination['name'],
+        'distance': coord.distance,
+        'diantance_ly': coord.distance.to('lyr'),
+        'spectype': spectype,
+        'vmag': vmag,
+        'amag': amag
     })
 
-for star in orion:
+output = {
+    'destinations': destinations,
+    'orion': [],
+    'path': orion_input['path']
+}
+
+for star in orion_input['stars']:
     designation = star['designation'] + ' orion'
 
-    coord = get_coord(designation)
+    coord = query_simbad(designation)[0]
 
-    o = {
+    star = {
         'designation': designation,
         'name': star['name'],
         'coords': {
@@ -93,18 +78,18 @@ for star in orion:
         }
     }
 
-    for star in destinations:
-        destination_coords = SkyCoord(x=coord.cartesian.x - destinations[star].cartesian.x,
-                                      y=coord.cartesian.y - destinations[star].cartesian.y,
-                                      z=coord.cartesian.z - destinations[star].cartesian.z,
-                                      unit='pc',frame='icrs',representation='cartesian')
-        destination_coords.representation = 'spherical'
+    for name in destination_coords:
+        shifted_coords = SkyCoord(x=coord.cartesian.x - destination_coords[name].cartesian.x,
+                                  y=coord.cartesian.y - destination_coords[name].cartesian.y,
+                                  z=coord.cartesian.z - destination_coords[name].cartesian.z,
+                                  unit='pc',frame='icrs',representation='cartesian')
+        shifted_coords.representation = 'spherical'
 
-        o['coords'][star] = {
-            'ra': float(destination_coords.ra.to_string(decimal=True)),
-            'dec': float(destination_coords.dec.to_string(decimal=True))
+        star['coords'][name] = {
+            'ra': float(shifted_coords.ra.to_string(decimal=True)),
+            'dec': float(shifted_coords.dec.to_string(decimal=True))
         }
 
-    output['orion'].append(o)
+    output['orion'].append(star)
 
 open('orion.json','w').write(json.dumps(output, cls=JsonCustomEncoder))

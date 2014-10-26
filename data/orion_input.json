@@ -1,0 +1,33 @@
+{
+    "stars": [
+        {
+            "designation": "alpha",
+            "name": "Beteigeuze"
+        },
+        {
+            "designation": "beta",
+            "name": "Rigel"
+        },
+        {
+            "designation": "gamma",
+            "name": "Bellatrix"
+        },
+        {
+            "designation": "epsilon",
+            "name": "Alnilam"
+        },
+        {
+            "designation": "zeta",
+            "name": "Alnitak"
+        },
+        {
+            "designation": "kappa",
+            "name": "Saiph"
+        },
+        {
+            "designation": "delta",
+            "name": "Mintaka"
+        }
+    ],
+    "path": [[0,4],[4,5],[2,6],[6,1],[4,3],[3,6]]
+}
