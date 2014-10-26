@@ -1,6 +1,5 @@
 * {
     color: #777;
-    font-size: 11px;
 }
 
 a {
@@ -36,4 +35,5 @@ span {
     position: fixed;
     bottom: 40px;
     left: 50px;
+    font-size: 11px;
 }
